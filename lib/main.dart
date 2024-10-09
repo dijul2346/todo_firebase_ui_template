@@ -1,8 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_firebase_ui_template/firebase_options.dart';
 import 'package:todo_firebase_ui_template/presentation/login.dart';
 import 'package:todo_firebase_ui_template/presentation/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform );
   runApp(const MainApp());
 }
 
