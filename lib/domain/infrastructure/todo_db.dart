@@ -23,7 +23,28 @@ Future<void> addUser(String userId, UserModel user) async {
 
 Future<bool> checkLogin(UserModel user) async {
   bool flag = false;
-  final userAuth = FirebaseAuth.instance;
-  UserCredential userCredential = await userAuth.signInWithEmailAndPassword(
-      email: user.userEmail, password: user.userPassword);
+  try {
+    final userAuth = FirebaseAuth.instance;
+    UserCredential userCredential = await userAuth.signInWithEmailAndPassword(
+        email: user.userEmail, password: user.userPassword);
+    if (userCredential.user != null) {
+      flag = true;
+    }
+  } catch (_) {
+    return Future.value(flag);
+  }
+  return Future.value(flag);
+}
+
+Future<String> getUserName(String userId) async {
+  String username = ' ';
+  if (userId != null) {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(userId)
+        .get()
+        .then((documentSnapshot){
+          
+        });
+  }
 }
