@@ -87,7 +87,7 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
                           Expanded(
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 25, right: 25),
+                                  const EdgeInsets.only(left: 24, right: 24),
                               child: TextFormField(
                                 controller: taskController,
                                 validator: (value) {
