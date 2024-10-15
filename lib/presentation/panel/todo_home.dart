@@ -11,17 +11,7 @@ class ScreenTodoHome extends StatefulWidget {
 }
 
 class _ScreenTodoHomeState extends State<ScreenTodoHome> {
-  List<TodoModel> todoModelList = [
-    TodoModel(id: '1', todoName: 'Hospital Visit', todoStatus: '0'),
-    TodoModel(id: '2', todoName: 'Car Wash', todoStatus: '0'),
-    TodoModel(id: '3', todoName: 'Call Technitian', todoStatus: '1'),
-    TodoModel(id: '4', todoName: 'School Fees', todoStatus: '0'),
-    TodoModel(id: '5', todoName: 'Create Trip Group', todoStatus: '0'),
-    TodoModel(id: '6', todoName: 'Family Function', todoStatus: '1'),
-    TodoModel(id: '7', todoName: 'Vaccine', todoStatus: '0'),
-    TodoModel(id: '8', todoName: 'Time Table update', todoStatus: '1'),
-    TodoModel(id: '8', todoName: 'Time Table update', todoStatus: '1'),
-  ];
+  List<TodoModel> todoModelList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final taskController = TextEditingController();
   final taskSearchController = TextEditingController();
@@ -40,37 +30,7 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
         ),
         backgroundColor: Colors.purple,
       ),
-      // floatingActionButton: Container(
-      //   decoration: BoxDecoration(color: Colors.amber),
-      //   child: Row(
-      //     children: [
-      //       Expanded(
-      //         child: Padding(
-      //           padding: const EdgeInsets.only(left: 25, right: 25),
-      //           child: TextFormField(
-      //             controller: taskSearchController,
-      //             validator: (value) {
-      //               if (value == null || value.isEmpty) {
-      //                 return 'Task Cannot be empty!';
-      //               } else {
-      //                 return null;
-      //               }
-      //             },
-      //             decoration: const InputDecoration(
-      //                 hintText: 'Search Task here..',
-      //                 hintStyle: TextStyle(color: Colors.grey),
-      //                 border: OutlineInputBorder(
-      //                     borderRadius: BorderRadius.all(Radius.circular(15)))),
-      //           ),
-      //         ),
-      //       ),
-      //       FloatingActionButton(
-      //         onPressed: () {},
-      //         child: const Icon(Icons.search),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -116,13 +76,7 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
                               if (_formKey.currentState!.validate()) {
                                 if (editFlag == false) {
                                   index = index + 1;
-                                  TodoModel t = TodoModel(
-                                      id: (index).toString(),
-                                      todoName: taskController.text,
-                                      todoStatus: '0');
-                                  setState(() {
-                                    todoModelList.add(t);
-                                  });
+                                  
                                   taskController.text = '';
                                 } else {
                                   setState(() {
@@ -163,14 +117,7 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
               child: ListView.separated(
                   itemBuilder: (context, index) {
                     return ListTile(
-                      onTap: () {
-                        setState(() {
-                          todoModelList[index].todoStatus =
-                              todoModelList[index].todoStatus == '0'
-                                  ? '1'
-                                  : '0';
-                        });
-                      },
+                      onTap: () {},
                       leading: Text(
                         (index + 1).toString(),
                         style: const TextStyle(fontSize: 19),
