@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_ui_template/core/core.dart';
 import 'package:todo_firebase_ui_template/domain/infrastructure/todo_db.dart';
@@ -30,7 +31,6 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
         ),
         backgroundColor: Colors.purple,
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -76,7 +76,13 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
                               if (_formKey.currentState!.validate()) {
                                 if (editFlag == false) {
                                   index = index + 1;
-                                  
+                                  TodoModel t = TodoModel(
+                                      id: 'id',
+                                      userId: 'userId',
+                                      todoName: taskController.text,
+                                      todoStatus: '0');
+                                  addTask(t);
+
                                   taskController.text = '';
                                 } else {
                                   setState(() {
@@ -155,10 +161,7 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
                                 icon: const Icon(Icons.edit)),
                             IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    todoModelList.removeWhere((item) =>
-                                        item.id == todoModelList[index].id);
-                                  });
+                                  deleteTask(todoModelList[index].id);
                                 },
                                 icon: const Icon(Icons.delete))
                           ],
@@ -179,8 +182,20 @@ class _ScreenTodoHomeState extends State<ScreenTodoHome> {
 
   Future<void> loadUserName() async {
     globalusername = await getUserName(globalUserId);
+    await loadDatabase();
     setState(() {
       userName = globalusername;
+      todoModelList = globalTodoList;
     });
   }
+}
+
+Future<void> deleteTask(String taskId) async {
+  await FirebaseFirestore.instance
+      .collection('tasks')
+      .doc(taskId)
+      .delete()
+      .then((_) {
+    loadDatabase();
+  });
 }

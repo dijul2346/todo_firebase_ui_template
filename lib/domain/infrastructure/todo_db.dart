@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_firebase_ui_template/core/core.dart';
 import 'package:todo_firebase_ui_template/domain/infrastructure/user_model.dart';
+import 'package:todo_firebase_ui_template/domain/todo_model.dart';
 
 Future<void> registerUser(UserModel user) async {
   final userAuth = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -55,4 +56,32 @@ Future<String> getUserName(String userId) async {
     });
   }
   return Future.value(userName);
+}
+
+Future<void> loadDatabase() async {
+  final firebaseFirestore = FirebaseFirestore.instance
+      .collection('tasks')
+      .where('userId', isEqualTo: globalUserId)
+      .get()
+      .then((querySnapshot) {
+    globalTodoList.clear();
+    for (var doc in querySnapshot.docs) {
+      TodoModel t = TodoModel(
+          id: doc.id,
+          userId: doc['userId'],
+          todoName: doc['name'],
+          todoStatus: doc['status']);
+      globalTodoList.add(t);
+    }
+  });
+}
+
+Future<void> addTask(TodoModel t) async {
+  await FirebaseFirestore.instance.collection('tasks').add({
+    'name': t.todoName,
+    'status': t.todoStatus,
+    'userId': globalUserId
+  }).then((_) async {
+    await loadDatabase();
+  });
 }
